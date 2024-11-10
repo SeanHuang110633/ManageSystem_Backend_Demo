@@ -1,0 +1,30 @@
+#開發環境
+server:
+  port: 8080
+spring:
+  config:
+    import: "file:./dataSource.properties"
+  datasource:
+    driver-class-name: ${db.driver-class-name}
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+logging:
+  config: classpath:logback-dev.xml
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+#
+mybatis:
+  configuration:
+    #MySQl中以下滑線命名的字段可以和實體類中的駝峰命名屬性自動轉換
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 开启调试模式
+#debug: true

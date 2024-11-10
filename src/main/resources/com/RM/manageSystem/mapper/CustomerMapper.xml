@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.RM.manageSystem.mapper.CustomerMapper">
+
+    <!--新增客戶-->
+    <insert id="addCustomer" parameterType="com.RM.manageSystem.model.entity.Customer">
+        INSERT INTO customertest
+        (customer_name, create_time, update_time, isDelete,
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthYear != null">
+                birth_year,
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                phone_number,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            <if test="frequency != null and frequency != ''">
+                frequency,
+            </if>
+            <if test="regularExercises != null and regularExercises.size > 0">
+                regular_exercises,
+            </if>
+            <if test="otherExercises != null and otherExercises != ''">
+                other_exercises,
+            </if>
+            <if test="approaches != null and approaches.size > 0">
+                approaches,
+            </if>
+            <if test="otherApproaches != null and otherApproaches != ''">
+                other_approaches,
+            </if>
+            <if test="firstLesson != null">
+                first_lesson,
+            </if>
+            <if test="lastLesson != null">
+                last_lesson,
+            </if>
+            <if test="totalLessons != null">
+                total_lessons,
+            </if>
+            <if test="remainingLessons != null">
+                remaining_lessons,
+            </if>
+            <if test="medicalHistoryCategory != null and medicalHistoryCategory.size > 0">
+                medical_history_category,
+            </if>
+            <if test="medicalHistoryBroken != null and medicalHistoryBroken != ''">
+                medical_history_broken,
+            </if>
+            <if test="medicalHistorySurgery != null and medicalHistorySurgery != ''">
+                medical_history_surgery,
+            </if>
+            <if test="medicalHistoryOther != null and medicalHistoryOther != ''">
+                medical_history_other,
+            </if>
+            <if test="medication != null and medication != ''">
+                medication,
+            </if>
+            <if test="symptoms != null and symptoms != ''">
+                symptoms,
+            </if>
+            <if test="symptomCauses != null and symptomCauses != ''">
+                symptom_causes,
+            </if>
+            <if test="transportationCategory != null and transportationCategory.size > 0">
+                transportation_category,
+            </if>
+        </trim>
+        )
+        VALUES
+        (#{customerName}, NOW(), NOW(), 0,
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="gender != null and gender != ''">
+                #{gender},
+            </if>
+            <if test="birthYear != null and birthYear != ''">
+                #{birthYear},
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                #{phoneNumber},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            <if test="frequency != null and frequency != ''">
+                #{frequency},
+            </if>
+            <if test="regularExercises != null and regularExercises.size > 0">
+                #{regularExercises, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="otherExercises != null and otherExercises != ''">
+                #{otherExercises},
+            </if>
+            <if test="approaches != null and approaches.size > 0">
+                #{approaches, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="otherApproaches != null and otherApproaches != '' ">
+                #{otherApproaches},
+            </if>
+            <if test="firstLesson != null">
+                #{firstLesson},
+            </if>
+            <if test="lastLesson != null">
+                #{lastLesson},
+            </if>
+            <if test="totalLessons != null">
+                #{totalLessons},
+            </if>
+            <if test="remainingLessons != null">
+                #{remainingLessons},
+            </if>
+            <if test="medicalHistoryCategory != null and medicalHistoryCategory.size > 0">
+                #{medicalHistoryCategory, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="medicalHistoryBroken != null and medicalHistoryBroken != ''">
+                #{medicalHistoryBroken},
+            </if>
+            <if test="medicalHistorySurgery != null and medicalHistorySurgery != ''">
+                #{medicalHistorySurgery},
+            </if>
+            <if test="medicalHistoryOther != null and medicalHistoryOther != ''">
+                #{medicalHistoryOther},
+            </if>
+            <if test="medication != null and medication != ''">
+                #{medication},
+            </if>
+            <if test="symptoms != null and symptoms != ''">
+                #{symptoms},
+            </if>
+            <if test="symptomCauses != null and symptomCauses != ''">
+                #{symptomCauses},
+            </if>
+            <if test="transportationCategory != null and transportationCategory.size > 0">
+                #{transportationCategory, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <!--查詢客戶-->
+    <select id="listCustomers" resultMap="CustomerResultMap">
+        select * from customertest
+        <where>
+            isDelete = 0
+            <if test="id != null and id > 0">
+                and id = #{id}
+            </if>
+            <if test="customerName != null and customerName != ''">
+                and customer_name LIKE CONCAT('%', #{customerName}, '%')
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                and phone_number LIKE CONCAT('%', #{phoneNumber}, '%')
+            </if>
+        </where>
+        order by last_lesson desc
+    </select>
+
+    <resultMap id="CustomerResultMap" type="com.RM.manageSystem.model.entity.Customer">
+        <id property="id" column="id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthYear" column="birth_year"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+        <result property="frequency" column="frequency"/>
+        <result property="regularExercises" column="regular_exercises" typeHandler="com.RM.manageSystem.handler.JsonListTypeHandler"/>
+        <result property="otherExercises" column="other_exercises"/>
+        <result property="approaches" column="approaches" typeHandler="com.RM.manageSystem.handler.JsonListTypeHandler"/>
+        <result property="otherApproaches" column="other_approaches"/>
+        <result property="firstLesson" column="first_lesson"/>
+        <result property="lastLesson" column="last_lesson"/>
+        <result property="totalLessons" column="total_lessons"/>
+        <result property="remainingLessons" column="remaining_lessons"/>
+        <result property="medicalHistoryCategory" column="medical_history_category" typeHandler="com.RM.manageSystem.handler.JsonListTypeHandler"/>
+        <result property="medicalHistoryBroken" column="medical_history_broken"/>
+        <result property="medicalHistorySurgery" column="medical_history_surgery"/>
+        <result property="medicalHistoryOther" column="medical_history_other"/>
+        <result property="medication" column="medication"/>
+        <result property="symptoms" column="symptoms"/>
+        <result property="symptomCauses" column="symptom_causes"/>
+        <result property="transportationCategory" column="transportation_category" typeHandler="com.RM.manageSystem.handler.JsonListTypeHandler"/>
+        <!-- <result property="transportationHabits" column="transportation_habits"/>-->
+        <!-- <result property="exerciseHabits" column="exercise_habits"/>-->
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="isDelete"/>
+    </resultMap>
+
+    <!--更新客戶資訊-->
+    <update id="updateCustomer" parameterType="com.RM.manageSystem.model.entity.Customer">
+        UPDATE customertest
+        <set>
+            <if test="customerName != null">
+                customer_name = #{customerName},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="birthYear != null">
+                birth_year = #{birthYear},
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''" >
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="frequency != null and frequency != ''">
+                frequency = #{frequency},
+            </if>
+            <if test="regularExercises != null ">
+                regular_exercises = #{regularExercises, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="otherExercises != null">
+                other_exercises = #{otherExercises},
+            </if>
+            <if test="approaches != null ">
+                approaches = #{approaches, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="otherApproaches != null">
+                other_approaches = #{otherApproaches},
+            </if>
+            <if test="firstLesson != null">
+                first_lesson = #{firstLesson},
+            </if>
+            <if test="lastLesson != null">
+                last_lesson = #{lastLesson},
+            </if>
+            <if test="totalLessons != null">
+                total_lessons = #{totalLessons},
+            </if>
+            <if test="remainingLessons != null">
+                remaining_lessons = #{remainingLessons},
+            </if>
+            <if test="medicalHistoryCategory != null ">
+                medical_history_category = #{medicalHistoryCategory, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            <if test="medicalHistoryBroken != null ">
+                medical_history_broken = #{medicalHistoryBroken},
+            </if>
+            <if test="medicalHistorySurgery != null ">
+                medical_history_surgery = #{medicalHistorySurgery},
+            </if>
+            <if test="medicalHistoryOther != null ">
+                medical_history_other = #{medicalHistoryOther},
+            </if>
+            <if test="medication != null and medication != ''">
+                medication = #{medication},
+            </if>
+            <if test="symptoms != null and symptoms != ''">
+                symptoms = #{symptoms},
+            </if>
+            <if test="symptomCauses != null and symptomCauses != ''">
+                symptom_causes = #{symptomCauses},
+            </if>
+            <if test="transportationCategory != null ">
+                transportation_category = #{transportationCategory, typeHandler=com.RM.manageSystem.handler.JsonListTypeHandler},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
