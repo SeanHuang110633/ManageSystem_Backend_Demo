@@ -5,7 +5,7 @@ spring:
     active: dev
 
 
-#MySQl中已下滑線命名的字段可以和實體類中的駝峰命名屬性自動轉換
+#MySQl中已下滑線命名的字段可以和實體類 s中的駝峰命名屬性自動轉換
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

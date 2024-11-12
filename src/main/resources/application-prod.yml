@@ -5,10 +5,6 @@ spring:
   config:
     import: "file:./dataSource.properties"
   datasource:
-#    url: jdbc:mysql://webserverdb-1.cdiqm6eo6153.ap-northeast-3.rds.amazonaws.com:3306/1rm_demo
-#    username: admin
-#    password: SeanIsCoding#^(
-#    driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: ${db.driver-class-name}
     url: ${db.url}
     username: ${db.username}
